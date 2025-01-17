@@ -5,50 +5,82 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IUB Events</title>
+    <title>Iub Events</title>
+    <style>
+        /* Limit badge width and apply ellipsis for overflow text */
+        .badge {
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        /* Pagination styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .pagination button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .pagination button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body class="bg-base-200">
 
 <header>
     <div class="navbar bg-base-100 mb-6">
-        <a class="btn btn-ghost text-xl">IUB Events</a>
+        <a class="btn btn-ghost text-xl">Iub Events</a>
         <div class="btn justify-end">
-            <label class="swap swap-rotate ">
+            <label class="swap swap-rotate">
                 <input type="checkbox" class="theme-controller" value="emerald" />
                 <svg class="swap-off h-10 w-10 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
                 </svg>
                 <svg class="swap-on h-10 w-10 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
+                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
                 </svg>
             </label>
         </div>
     </div>
 
-    <div class="mb-6 px-6 flex gap-4 justify-center">
-        <select class="select select-secondary w-52" id="categoryFilter">
-            <option value="">Filter by Category</option>
-            <option value="Music">Music</option>
-            <option value="Theatre">Theatre</option>
-            <option value="HR">HR</option>
+    <div class="mb-6 px-6 flex flex-wrap gap-4 justify-center">
+        <select class="select select-secondary w-full sm:w-52">
+            <option disabled selected>Type?</option>
+            <option>All</option>
+            <option>Seminar</option>
+            <option>Workshop</option>
         </select>
-        <select class="select select-secondary w-52" id="clubFilter">
-            <option value="">Filter by Club</option>
-            <option value="IUB Music Club">IUB Music Club</option>
-            <option value="IUB Theatre">IUB Theatre</option>
-            <option value="Independent HR Society">Independent HR Society</option>
+        <select class="select select-secondary w-full sm:w-52">
+            <option disabled selected>Dept?</option>
+            <option>All</option>
+            <option>CSE</option>
+            <option>BBA</option>
         </select>
-        <select class="select select-secondary w-52" id="deptFilter">
-            <option value="">Filter by Department</option>
-            <option value="Management">Management</option>
-            <option value="Marketing">Marketing</option>
+        <select class="select select-secondary w-full sm:w-52">
+            <option disabled selected>Club?</option>
+            <option>All</option>
+            <option>HR Society</option>
+            <option>Jukti</option>
         </select>
-        <button class="btn btn-accent">Filter</button>
+        <button class="btn btn-accent w-full sm:w-auto">Filter</button>
     </div>
 </header>
 
 <main class="px-6">
-    <div class="event-list" id="eventList"></div>
+    <div class="event-list">
+        <div class="card bg-base-100 w-full md:w-96 shadow-xl mb-6" id="eventContainer"></div>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
 </main>
 
 <footer class="footer footer-center bg-base-100 text-base-content rounded p-10 mt-6">
@@ -58,12 +90,35 @@
         <a class="link link-hover">Jobs</a>
         <a class="link link-hover">Press kit</a>
     </nav>
-    <p>Copyright © 2025 IUB - All rights reserved</p>
+    <nav>
+        <div class="grid grid-flow-col gap-4">
+            <a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+                </svg>
+            </a>
+            <a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-9.5 12.816v-8l8 3.993-8 4.007z"></path>
+                </svg>
+            </a>
+            <a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+                </svg>
+            </a>
+        </div>
+    </nav>
+    <aside>
+        <p>Copyright © {new Date().getFullYear()} - All rights reserved by IUB</p>
+    </aside>
 </footer>
 
 <script>
 // Fetch and display event data
 const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRwJWqPH7hK43GO-t6ZFizR_pAm0A1DfmvROtjnoN16ZwMWdTYYJM6eqHbK1w1Gw12UV-KzKQfP0jG/pub?output=csv";
+let currentPage = 1;
+const eventsPerPage = 5; // Adjust number of events per page
 
 function fetchEvents() {
     fetch(sheetURL)
@@ -71,6 +126,7 @@ function fetchEvents() {
         .then(data => {
             const events = parseCSV(data);
             displayEvents(events);
+            setupPagination(events);
         })
         .catch(error => console.error('Error fetching event data:', error));
 }
@@ -80,81 +136,60 @@ function parseCSV(data) {
     const events = rows.slice(1).map(row => {
         const cols = row.split(',');
         return {
-            timestamp: cols[0],
-            email: cols[1],
-            club: cols[2],
             eventName: cols[3],
             eventDate: cols[4],
             eventTime: `${cols[6]} - ${cols[7]}`,
             location: cols[8],
-            description: cols[10],
-            link: cols[11],
-            category: cols[12], // Assuming there's a column for category
-            department: cols[13] // Assuming there's a column for department
+            club: cols[2],
+            category: cols[10],
+            link: cols[11]
         };
     });
     return events;
 }
 
 function displayEvents(events) {
-    const eventList = document.getElementById('eventList');
+    const eventList = document.getElementById('eventContainer');
     eventList.innerHTML = '';
     
-    events.forEach(event => {
-        const card = document.createElement('div');
-        card.classList.add('card', 'bg-base-100', 'shadow-xl', 'mb-6', 'w-full', 'md:w-96');
-        card.innerHTML = `
-            <figure>
-                <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Event Image" />
-            </figure>
+    const startIdx = (currentPage - 1) * eventsPerPage;
+    const paginatedEvents = events.slice(startIdx, startIdx + eventsPerPage);
+    
+    paginatedEvents.forEach(event => {
+        const eventCard = document.createElement('div');
+        eventCard.classList.add('card', 'bg-base-100', 'w-full', 'shadow-xl');
+        eventCard.innerHTML = `
             <div class="card-body">
-                <h2 class="card-title text-2xl mb-2">
-                    ${event.eventName}
-                    <div class="badge badge-secondary ml-2">${event.club}</div>
-                </h2>
-                <p class="text-lg">Time: ${event.eventTime}</p>
-                <p class="text-lg">Date: ${event.eventDate}</p>
-                <p class="text-lg">Venue: ${event.location}</p>
-                <div class="card-actions justify-start mt-4">
-                    <div class="badge badge-outline mr-2">${event.category}</div>
-                    <div class="badge badge-outline">${event.department}</div>
-                </div>
-                <a href="${event.link}" class="btn btn-primary mt-4">Details</a>
+                <h2 class="card-title">${event.eventName}</h2>
+                <p><strong>Date:</strong> ${event.eventDate}</p>
+                <p><strong>Time:</strong> ${event.eventTime}</p>
+                <p><strong>Location:</strong> ${event.location}</p>
+                <p><strong>Club:</strong> <span class="badge">${event.club.substring(0, 8)}...</span></p>
+                <a href="${event.link}" target="_blank" class="btn btn-primary">More Info</a>
             </div>
         `;
-        eventList.appendChild(card);
+        eventList.appendChild(eventCard);
     });
 }
 
-function filterEvents() {
-    const category = document.getElementById('categoryFilter').value;
-    const club = document.getElementById('clubFilter').value;
-    const dept = document.getElementById('deptFilter').value;
-
-    fetch(sheetURL)
-        .then(response => response.text())
-        .then(data => {
-            let events = parseCSV(data);
-            if (category) {
-                events = events.filter(event => event.category === category);
-            }
-            if (club) {
-                events = events.filter(event => event.club === club);
-            }
-            if (dept) {
-                events = events.filter(event => event.department === dept);
-            }
-            displayEvents(events);
-        })
-        .catch(error => console.error('Error filtering event data:', error));
+function setupPagination(events) {
+    const pagination = document.getElementById('pagination');
+    const totalPages = Math.ceil(events.length / eventsPerPage);
+    
+    pagination.innerHTML = '';
+    
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.addEventListener('click', () => {
+            currentPage = i;
+            fetchEvents();
+        });
+        pagination.appendChild(pageButton);
+    }
 }
 
-document.getElementById('categoryFilter').addEventListener('change', filterEvents);
-document.getElementById('clubFilter').addEventListener('change', filterEvents);
-document.getElementById('deptFilter').addEventListener('change', filterEvents);
-
-fetchEvents(); // Initial call to load events
+fetchEvents();
 </script>
-
 </body>
 </html>
