@@ -1,21 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Calendar Events</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Events</title>
+    <style>
+        .event-list { padding: 0; list-style: none; }
+        .event-item { margin: 20px 0; }
+        .learn-more { text-decoration: none; background-color: #007BFF; color: white; padding: 10px 20px; border-radius: 5px; }
+    </style>
 </head>
 <body>
-  <h1 style="text-align: center; margin-top: 20px;">Upcoming Events</h1>
-  <script src="calendar.js"></script>
+    <h1>Upcoming Events</h1>
+    <ul id="event-list" class="event-list"></ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
+    <script>
+        const CALENDAR_URL = 'https://calendar.google.com/calendar/ical/c_q5s4j97isu0jprs9nkelo27ak8%40group.calendar.google.com/public/basic.ics';
+
+        async function fetchEvents() {
+            const response = await fetch(CALENDAR_URL);
+            const icsData = await response.text();
+            const jcalData = ICAL.parse(icsData); // Parse the ICS data
+
+            const comp = new ICAL.Component(jcalData);
+            const events = comp.getAllSubcomponents('vevent');
+            const eventList = document.getElementById('event-list');
+
+            const now = new Date();
+            const thirtyDaysLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days from now
+
+            events.forEach(event => {
+                const startDate = event.getFirstPropertyValue('dtstart');
+                const eventDate = new Date(startDate);
+
+                if (eventDate >= now && eventDate <= thirtyDaysLater) {
+                    const eventItem = document.createElement('li');
+                    eventItem.classList.add('event-item');
+                    const eventSummary = event.getFirstPropertyValue('summary');
+                    eventItem.innerHTML = `
+                        <strong>${eventSummary}</strong> <br>
+                        <small>${eventDate.toLocaleString()}</small><br>
+                        <a href="event-details.html?eventSummary=${encodeURIComponent(eventSummary)}&eventDate=${eventDate.toISOString()}" class="learn-more">Learn More</a>
+                    `;
+                    eventList.appendChild(eventItem);
+                }
+            });
+        }
+
+        window.onload = fetchEvents;
+    </script>
 </body>
 </html>
 
