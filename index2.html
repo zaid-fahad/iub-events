@@ -39,7 +39,7 @@
 <header>
     <div class="navbar bg-base-100 mb-6">
         <a class="btn btn-ghost text-xl">Iub Events</a>
-        <div class="btn justify-end">
+        <!-- <div class="btn justify-end">
             <label class="swap swap-rotate">
                 <input type="checkbox" class="theme-controller" value="emerald" />
                 <svg class="swap-off h-10 w-10 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -49,29 +49,7 @@
                     <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
                 </svg>
             </label>
-        </div>
-    </div>
-
-    <div class="mb-6 px-6 flex flex-wrap gap-4 justify-center">
-        <select class="select select-secondary w-full sm:w-52">
-            <option disabled selected>Type?</option>
-            <option>All</option>
-            <option>Seminar</option>
-            <option>Workshop</option>
-        </select>
-        <select class="select select-secondary w-full sm:w-52">
-            <option disabled selected>Dept?</option>
-            <option>All</option>
-            <option>CSE</option>
-            <option>BBA</option>
-        </select>
-        <select class="select select-secondary w-full sm:w-52">
-            <option disabled selected>Club?</option>
-            <option>All</option>
-            <option>HR Society</option>
-            <option>Jukti</option>
-        </select>
-        <button class="btn btn-accent w-full sm:w-auto">Filter</button>
+        </div> -->
     </div>
 </header>
 
@@ -142,7 +120,8 @@ function parseCSV(data) {
             location: cols[8],
             club: cols[2],
             category: cols[10],
-            link: cols[11]
+            link: cols[11],
+            image: cols[12] // Assuming there's an image column
         };
     });
     return events;
@@ -165,6 +144,7 @@ function displayEvents(events) {
                 <p><strong>Time:</strong> ${event.eventTime}</p>
                 <p><strong>Location:</strong> ${event.location}</p>
                 <p><strong>Club:</strong> <span class="badge">${event.club.substring(0, 8)}...</span></p>
+                <img src="${event.image}" alt="Event Image" class="w-full h-48 object-cover mb-4">
                 <a href="${event.link}" target="_blank" class="btn btn-primary">More Info</a>
             </div>
         `;
@@ -179,17 +159,19 @@ function setupPagination(events) {
     pagination.innerHTML = '';
     
     for (let i = 1; i <= totalPages; i++) {
-        const pageButton = document.createElement('button');
-        pageButton.textContent = i;
-        pageButton.addEventListener('click', () => {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.onclick = () => {
             currentPage = i;
-            fetchEvents();
-        });
-        pagination.appendChild(pageButton);
+            displayEvents(events);
+        };
+        pagination.appendChild(button);
     }
 }
 
+// Call the fetchEvents function to load the events on page load
 fetchEvents();
 </script>
+
 </body>
 </html>
