@@ -1,50 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upcoming Events</title>
     <style>
-        .event-list { padding: 0; list-style: none; }
-        .event-item { margin: 20px 0; }
-        .learn-more { text-decoration: none; background-color: #007BFF; color: white; padding: 10px 20px; border-radius: 5px; }
+        /* Add your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header, footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        .event-list {
+            padding: 20px;
+        }
+        .event-card {
+            background-color: white;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .event-card h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .event-card button {
+            padding: 5px 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .event-card button:hover {
+            background-color: #0056b3;
+        }
+        .filter-container {
+            margin: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .filter-container select {
+            padding: 5px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
+
+<header>
     <h1>Upcoming Events</h1>
-    <ul id="event-list" class="event-list"></ul>
+</header>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.4.0/ical.min.js"></script>
-    <script>
-        const CALENDAR_URL = 'https://calendar.google.com/calendar/ical/c_q5s4j97isu0jprs9nkelo27ak8%40group.calendar.google.com/public/basic.ics';
+<main>
+    <div class="filter-container">
+        <select id="categoryFilter">
+            <option value="">Filter by Category</option>
+            <option value="Music">Music</option>
+            <option value="Theatre">Theatre</option>
+            <option value="HR">HR</option>
+            <!-- Add more categories as needed -->
+        </select>
+        <select id="clubFilter">
+            <option value="">Filter by Club</option>
+            <option value="IUB Music Club">IUB Music Club</option>
+            <option value="IUB Theatre">IUB Theatre</option>
+            <option value="Independent HR Society">Independent HR Society</option>
+            <!-- Add more clubs as needed -->
+        </select>
+        <select id="deptFilter">
+            <option value="">Filter by Department</option>
+            <option value="Management">Management</option>
+            <option value="Marketing">Marketing</option>
+            <!-- Add more departments as needed -->
+        </select>
+    </div>
 
-        async function fetchEvents() {
-            const response = await fetch(CALENDAR_URL);
-            const icsData = await response.text();
-            const jcalData = ICAL.parse(icsData); // Parse the ICS data
+    <div class="event-list" id="eventList"></div>
+</main>
 
-            const comp = new ICAL.Component(jcalData);
-            const events = comp.getAllSubcomponents('vevent');
-            const eventList = document.getElementById('event-list');
+<footer>
+    <p>&copy; 2025 Event Website</p>
+</footer>
 
-            const now = new Date();
-            const thirtyDaysLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days from now
+<script>
+// Fetch and display event data
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSRwJWqPH7hK43GO-t6ZFizR_pAm0A1DfmvROtjnoN16ZwMWdTYYJM6eqHbK1w1Gw12UV-KzKQfP0jG/pub?output=csv";
 
-            events.forEach(event => {
-                const startDate = event.getFirstPropertyValue('dtstart');
-                const eventDate = new Date(startDate);
+function fetchEvents() {
+    fetch(sheetURL)
+        .then(response => response.text())
+        .then(data => {
+            const events = parseCSV(data);
+            displayEvents(events);
+        })
+        .catch(error => console.error('Error fetching event data:', error));
+}
 
-                if (eventDate >= now && eventDate <= thirtyDaysLater) {
-                    const eventItem = document.createElement('li');
-                    eventItem.classList.add('event-item');
-                    const eventSummary = event.getFirstPropertyValue('summary');
-                    eventItem.innerHTML = `
-                        <strong>${eventSummary}</strong> <br>
-                        <small>${eventDate.toLocaleString()}</small><br>
-                        <a href="event-details.html?eventSummary=${encodeURIComponent(eventSummary)}&eventDate=${eventDate.toISOString()}" class="learn-more">Learn More</a>
-                    `;
-                    eventList.appendChild(eventItem);
-                }
-            });
-        }
+function parseCSV(data) {
+    const rows = data.split('\n');
+    const events = rows.slice(1).map(row => {
+        const cols = row.split(',');
+        return {
+            timestamp: cols[0],
+            email: cols[1],
+            club: cols[2],
+            eventName: cols[3],
+            eventDate: cols[4],
+            eventTime: `${cols[6]} - ${cols[7]}`,
+            location: cols[8],
+            description: cols[10],
+            link: cols[11]
+        };
+    });
+    return events;
+}
 
-        window.onload = fetchEvents;
-    </script>
+function displayEvents(events) {
+    const eventList = document.getElementById('eventList');
+    eventList.innerHTML = '';
+    
+    events.forEach(event => {
+        const card = document.createElement('div');
+        card.classList.add('event-card');
+        card.innerHTML = `
+            <h3>${event.eventName}</h3>
+            <p><strong>Date:</strong> ${event.eventDate}</p>
+            <p><strong>Time:</strong> ${event.eventTime}</p>
+            <p><strong>Location:</strong> ${event.location}</p>
+            <button onclick="viewEventDetails('${event.eventName}')">View Details</button>
+        `;
+        eventList.appendChild(card);
+    });
+}
+
+function viewEventDetails(eventName) {
+    window.location.href = `/event-details.html?name=${encodeURIComponent(eventName)}`;
+}
+
+document.getElementById('categoryFilter').addEventListener('change', filterEvents);
+document.getElementById('clubFilter').addEventListener('change', filterEvents);
+document.getElementById('deptFilter').addEventListener('change', filterEvents);
+
+function filterEvents() {
+    const category = document.getElementById('categoryFilter').value;
+    const club = document.getElementById('clubFilter').value;
+    const dept = document.getElementById('deptFilter').value;
+
+    fetch(sheetURL)
+        .then(response => response.text())
+        .then(data => {
+            let events = parseCSV(data);
+            if (category) {
+                events = events.filter(event => event.category === category);
+            }
+            if (club) {
+                events = events.filter(event => event.club === club);
+            }
+            if (dept) {
+                events = events.filter(event => event.department === dept);
+            }
+            displayEvents(events);
+        })
+        .catch(error => console.error('Error filtering event data:', error));
+}
+
+fetchEvents(); // Initial call to load events
+</script>
+
 </body>
 </html>
 
