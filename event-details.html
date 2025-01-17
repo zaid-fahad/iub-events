@@ -4,64 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Details</title>
-    <!-- Add your CSS file here -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div id="eventDetails" class="event-details-container">
-        <h1 id="eventTitle"></h1>
-        <p id="eventDate"></p>
-        <p id="eventTime"></p>
-        <p id="eventLocation"></p>
-        <p id="eventDescription"></p>
-        <p id="eventCategory"></p>
-        <p id="eventClub"></p>
-        <p id="eventDepartment"></p>
+<body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-blue-500 p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-white text-2xl font-semibold">Event Portal</a>
+            <a href="index.html" class="btn btn-outline text-white">Back to Events</a>
+        </div>
+    </nav>
+
+    <!-- Event Details Section -->
+    <div class="container mx-auto p-6 mt-8 bg-white shadow-xl rounded-lg">
+        <div class="flex flex-col md:flex-row">
+            <!-- Event Image -->
+            <div class="w-full md:w-1/3 mb-6 md:mb-0">
+                <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Event Image" class="w-full h-64 object-cover rounded-lg">
+            </div>
+
+            <!-- Event Info -->
+            <div class="w-full md:w-2/3 md:pl-6">
+                <h1 class="text-4xl font-semibold mb-4" id="eventTitle"></h1>
+                <div class="flex items-center space-x-6 mb-4">
+                    <p class="text-lg text-gray-700" id="eventDate"></p>
+                    <p class="text-lg text-gray-700" id="eventTime"></p>
+                </div>
+                <p class="text-lg text-gray-700 mb-4" id="eventLocation"></p>
+
+                <div class="mb-4">
+                    <h2 class="text-2xl font-semibold">Description:</h2>
+                    <p class="text-lg text-gray-800" id="eventDescription"></p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Get the event name from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const eventName = urlParams.get('event');
+        // Function to get the query parameter value by name
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
 
-        // Fetch event data again and display the selected event details
-        fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSRwJWqPH7hK43GO-t6ZFizR_pAm0A1DfmvROtjnoN16ZwMWdTYYJM6eqHbK1w1Gw12UV-KzKQfP0jG/pub?output=csv')
-            .then(response => response.text())
-            .then(data => {
-                const events = parseCSV(data);
-                const event = events.find(e => e.eventName === eventName); // Find the event by name
-                if (event) {
-                    // Fill in the event details on the page
-                    document.getElementById('eventTitle').innerText = event.eventName;
-                    document.getElementById('eventDate').innerText = `Date: ${event.eventDate}`;
-                    document.getElementById('eventTime').innerText = `Time: ${event.eventTime}`;
-                    document.getElementById('eventLocation').innerText = `Location: ${event.location}`;
-                    document.getElementById('eventDescription').innerText = `Description: ${event.description}`;
-                    document.getElementById('eventCategory').innerText = `Category: ${event.category}`;
-                    document.getElementById('eventClub').innerText = `Club: ${event.club}`;
-                    document.getElementById('eventDepartment').innerText = `Department: ${event.department}`;
-                } else {
-                    document.getElementById('eventDetails').innerHTML = "<p>Event not found.</p>";
-                }
-            })
-            .catch(error => console.error('Error fetching event data:', error));
+        // Fetch event details from URL parameters
+        const eventName = getQueryParam('eventName');
+        const eventDate = getQueryParam('eventDate');
+        const eventTime = getQueryParam('eventTime');
+        const eventLocation = getQueryParam('eventLocation');
+        const eventDescription = getQueryParam('eventDescription');
 
-        // Parse CSV data function
-        function parseCSV(data) {
-            const rows = data.split('\n');
-            return rows.slice(1).map(row => {
-                const cols = row.split(',');
-                return {
-                    eventName: cols[3],
-                    eventDate: cols[4],
-                    eventTime: `${cols[6]} - ${cols[7]}`,
-                    location: cols[8],
-                    description: cols[10],
-                    link: cols[11],
-                    category: cols[12],
-                    club: cols[2],
-                    department: cols[1]
-                };
-            });
+        // Populate the page with event details
+        if (eventName && eventDate && eventTime && eventLocation && eventDescription) {
+            document.getElementById('eventTitle').textContent = decodeURIComponent(eventName);
+            document.getElementById('eventDate').textContent = `Date: ${decodeURIComponent(eventDate)}`;
+            document.getElementById('eventTime').textContent = `Time: ${decodeURIComponent(eventTime)}`;
+            document.getElementById('eventLocation').textContent = `Location: ${decodeURIComponent(eventLocation)}`;
+            document.getElementById('eventDescription').textContent = decodeURIComponent(eventDescription);
+        } else {
+            document.body.innerHTML = "<p class='text-center text-lg text-red-600 mt-4'>Event details not found!</p>";
         }
     </script>
 </body>

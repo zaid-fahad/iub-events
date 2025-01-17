@@ -189,7 +189,8 @@ function displayEvents(events) {
                     <div class="badge badge-outline">${event.department}</div>
                     <div class="badge badge-secondary">${event.club}</div>
                 </div>
-                <a href="event-details.html?event=${encodeURIComponent(event.eventName)}&date=${encodeURIComponent(event.eventDate)}&time=${encodeURIComponent(event.eventTime)}&location=${encodeURIComponent(event.location)}&description=${encodeURIComponent(event.description)}" class="btn btn-primary mt-4">Details</a>
+                <a href="event-details.html?eventName=${encodeURIComponent(event.eventName)}&eventDate=${encodeURIComponent(event.eventDate)}&eventTime=${encodeURIComponent(event.eventTime)}&eventLocation=${encodeURIComponent(event.location)}&eventDescription=${encodeURIComponent(event.description)}" class="btn btn-primary mt-4">Details</a>
+
             </div>
         `;
         eventList.appendChild(card);
