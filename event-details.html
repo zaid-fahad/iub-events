@@ -4,84 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Details</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        header, footer {
-            background-color: #5f4b8b;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
-        .event-details-container {
-            padding: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .event-details-container h2 {
-            color: #5f4b8b;
-        }
-        .event-details-container p {
-            font-size: 1.1rem;
-            margin: 10px 0;
-        }
-        .event-details-container button {
-            padding: 10px 20px;
-            background-color: #ff7f32;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .event-details-container button:hover {
-            background-color: #e66322;
-        }
-    </style>
+    <!-- Add your CSS file here -->
 </head>
 <body>
-
-<header>
-    <h1>Event Details</h1>
-</header>
-
-<main>
-    <div class="event-details-container" id="eventDetailsContainer">
-        <!-- Event details will be populated here -->
+    <div id="eventDetails" class="event-details-container">
+        <h1 id="eventTitle"></h1>
+        <p id="eventDate"></p>
+        <p id="eventTime"></p>
+        <p id="eventLocation"></p>
+        <p id="eventDescription"></p>
+        <p id="eventCategory"></p>
+        <p id="eventClub"></p>
+        <p id="eventDepartment"></p>
     </div>
-</main>
 
-<footer>
-    <p>&copy; 2025 Event Website</p>
-</footer>
+    <script>
+        // Get the event name from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventName = urlParams.get('event');
 
-<script>
-const eventDetails = JSON.parse(localStorage.getItem('eventDetails'));
+        // Fetch event data again and display the selected event details
+        fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vSRwJWqPH7hK43GO-t6ZFizR_pAm0A1DfmvROtjnoN16ZwMWdTYYJM6eqHbK1w1Gw12UV-KzKQfP0jG/pub?output=csv')
+            .then(response => response.text())
+            .then(data => {
+                const events = parseCSV(data);
+                const event = events.find(e => e.eventName === eventName); // Find the event by name
+                if (event) {
+                    // Fill in the event details on the page
+                    document.getElementById('eventTitle').innerText = event.eventName;
+                    document.getElementById('eventDate').innerText = `Date: ${event.eventDate}`;
+                    document.getElementById('eventTime').innerText = `Time: ${event.eventTime}`;
+                    document.getElementById('eventLocation').innerText = `Location: ${event.location}`;
+                    document.getElementById('eventDescription').innerText = `Description: ${event.description}`;
+                    document.getElementById('eventCategory').innerText = `Category: ${event.category}`;
+                    document.getElementById('eventClub').innerText = `Club: ${event.club}`;
+                    document.getElementById('eventDepartment').innerText = `Department: ${event.department}`;
+                } else {
+                    document.getElementById('eventDetails').innerHTML = "<p>Event not found.</p>";
+                }
+            })
+            .catch(error => console.error('Error fetching event data:', error));
 
-if (eventDetails) {
-    const eventDetailsContainer = document.getElementById('eventDetailsContainer');
-    eventDetailsContainer.innerHTML = `
-        <h2>${eventDetails.eventName}</h2>
-        <p><strong>Club:</strong> ${eventDetails.club}</p>
-        <p><strong>Event Date:</strong> ${eventDetails.eventDate}</p>
-        <p><strong>Time:</strong> ${eventDetails.eventStartTime} - ${eventDetails.eventEndTime}</p>
-        <p><strong>Location:</strong> ${eventDetails.location}</p>
-        <p><strong>Description:</strong> ${eventDetails.description}</p>
-        <button onclick="window.location.href='index.html'">Back to Events</button>
-    `;
-} else {
-    document.body.innerHTML = '<p>No event details available.</p>';
-}
-</script>
-
+        // Parse CSV data function
+        function parseCSV(data) {
+            const rows = data.split('\n');
+            return rows.slice(1).map(row => {
+                const cols = row.split(',');
+                return {
+                    eventName: cols[3],
+                    eventDate: cols[4],
+                    eventTime: `${cols[6]} - ${cols[7]}`,
+                    location: cols[8],
+                    description: cols[10],
+                    link: cols[11],
+                    category: cols[12],
+                    club: cols[2],
+                    department: cols[1]
+                };
+            });
+        }
+    </script>
 </body>
 </html>
-
