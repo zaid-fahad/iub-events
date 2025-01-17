@@ -62,26 +62,16 @@
 </header>
 
 <main>
+    <!-- Filters -->
     <div class="filter-container">
         <select id="categoryFilter">
             <option value="">Filter by Category</option>
-            <option value="Music">Music</option>
-            <option value="Theatre">Theatre</option>
-            <option value="HR">HR</option>
-            <!-- Add more categories as needed -->
         </select>
         <select id="clubFilter">
             <option value="">Filter by Club</option>
-            <option value="IUB Music Club">IUB Music Club</option>
-            <option value="IUB Theatre">IUB Theatre</option>
-            <option value="Independent HR Society">Independent HR Society</option>
-            <!-- Add more clubs as needed -->
         </select>
         <select id="deptFilter">
             <option value="">Filter by Department</option>
-            <option value="Management">Management</option>
-            <option value="Marketing">Marketing</option>
-            <!-- Add more departments as needed -->
         </select>
     </div>
 
@@ -146,6 +136,41 @@ function displayEvents(events) {
 function viewEventDetails(eventName) {
     window.location.href = `/event-details.html?name=${encodeURIComponent(eventName)}`;
 }
+
+function populateFilters(events) {
+    const categories = new Set(events.map(event => event.category));
+    const clubs = new Set(events.map(event => event.club));
+    const departments = new Set(events.map(event => event.department));
+
+    // Populate category filter
+    const categoryFilter = document.getElementById('categoryFilter');
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+
+    // Populate club filter
+    const clubFilter = document.getElementById('clubFilter');
+    clubs.forEach(club => {
+        const option = document.createElement('option');
+        option.value = club;
+        option.textContent = club;
+        clubFilter.appendChild(option);
+    });
+
+    // Populate department filter
+    const deptFilter = document.getElementById('deptFilter');
+    departments.forEach(department => {
+        const option = document.createElement('option');
+        option.value = department;
+        option.textContent = department;
+        deptFilter.appendChild(option);
+    });
+}
+
+
 
 document.getElementById('categoryFilter').addEventListener('change', filterEvents);
 document.getElementById('clubFilter').addEventListener('change', filterEvents);

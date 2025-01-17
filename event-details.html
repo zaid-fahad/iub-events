@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        header, footer {
+            background-color: #5f4b8b; /* Purple-Blue */
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        /* Event Details Styles */
+        .event-details-container {
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .event-details-container h2 {
+            color: #5f4b8b;
+            margin-bottom: 20px;
+        }
+        .event-details-container p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        .event-details-container button {
+            padding: 10px 20px;
+            background-color: #ff7f32; /* Orange Accent */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+        .event-details-container button:hover {
+            background-color: #e66322;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Event Details</h1>
+</header>
+
+<main>
+    <div class="event-details-container" id="eventDetailsContainer">
+        <!-- Event details will be populated here -->
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Event Website</p>
+</footer>
+
+<script>
+// Retrieve event details from localStorage
+const eventDetails = JSON.parse(localStorage.getItem('eventDetails'));
+
+if (eventDetails) {
+    const eventDetailsContainer = document.getElementById('eventDetailsContainer');
+    
+    eventDetailsContainer.innerHTML = `
+        <h2>${eventDetails.eventName}</h2>
+        <p><strong>Club:</strong> ${eventDetails.club}</p>
+        <p><strong>Event Date:</strong> ${eventDetails.eventDate}</p>
+        <p><strong>Time:</strong> ${eventDetails.eventTime}</p>
+        <p><strong>Location:</strong> ${eventDetails.location}</p>
+        <p><strong>Description:</strong> ${eventDetails.description}</p>
+        ${eventDetails.link ? `<p><strong>Additional Info:</strong> <a href="${eventDetails.link}" target="_blank">View Invitation</a></p>` : ''}
+        <button onclick="goBack()">Go Back</button>
+    `;
+} else {
+    document.body.innerHTML = '<p>No event details available.</p>';
+}
+
+function goBack() {
+    window.location.href = 'index.html'; // Go back to the main event list page
+}
+</script>
+
+</body>
+</html>
+
