@@ -19,7 +19,7 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-top: 20px;
+            margin: 20px;
         }
         .pagination button {
             padding: 5px 10px;
@@ -180,7 +180,7 @@ function displayEvents(events) {
                 <p class="event_t ">${event.eventTime} | ${event.eventDate}</p>
                 <!-- <p class="text-lg">Location: ${event.location}</p> -->
                 <!-- <a href="event-details.html?eventName=${encodeURIComponent(event.eventName)}&eventDate=${encodeURIComponent(event.eventDate)}&eventTime=${encodeURIComponent(event.eventTime)}&eventLocation=${encodeURIComponent(event.location)}&eventDescription=${encodeURIComponent(event.description)}" class="btn btn-primary mt-4">Details</a>-->
-                <button class="mt-4 event-button dark:text-white">${event.club}</button>
+                <button class="mt-4 event-button dark:text-white" ><a href="event-details.html?eventName=${encodeURIComponent(event.eventName)}&eventDate=${encodeURIComponent(event.eventDate)}&eventTime=${encodeURIComponent(event.eventTime)}&eventLocation=${encodeURIComponent(event.location)}&eventDescription=${encodeURIComponent(event.description)}">${event.club}</a></button>
             </div>
         `;
         eventList.appendChild(card);
