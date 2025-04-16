@@ -208,33 +208,33 @@ function setupPagination(events) {
     }
 }
 
-// Apply filters based on user selection
-document.querySelector('.btn-accent').addEventListener('click', function() {
-    const category = document.getElementById('categoryFilter').value;
-    const club = document.getElementById('clubFilter').value;
-    const dept = document.getElementById('deptFilter').value;
+// // Apply filters based on user selection
+// document.querySelector('.btn-accent').addEventListener('click', function() {
+//     const category = document.getElementById('categoryFilter').value;
+//     const club = document.getElementById('clubFilter').value;
+//     const dept = document.getElementById('deptFilter').value;
 
-    fetch(sheetURL)
-        .then(response => response.text())
-        .then(data => {
-            let events = parseCSV(data);
-            events = filterFutureEvents(events);
+//     fetch(sheetURL)
+//         .then(response => response.text())
+//         .then(data => {
+//             let events = parseCSV(data);
+//             events = filterFutureEvents(events);
 
-            if (category) {
-                events = events.filter(event => event.category === category);
-            }
-            if (club) {
-                events = events.filter(event => event.club === club);
-            }
-            if (dept) {
-                events = events.filter(event => event.department === dept);
-            }
+//             if (category) {
+//                 events = events.filter(event => event.category === category);
+//             }
+//             if (club) {
+//                 events = events.filter(event => event.club === club);
+//             }
+//             if (dept) {
+//                 events = events.filter(event => event.department === dept);
+//             }
 
-            displayEvents(events);
-            setupPagination(events);
-        })
-        .catch(error => console.error('Error filtering event data:', error));
-});
+//             displayEvents(events);
+//             setupPagination(events);
+//         })
+//         .catch(error => console.error('Error filtering event data:', error));
+// });
 
 // Initial fetch
 fetchEvents();
