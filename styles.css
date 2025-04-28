@@ -21,18 +21,26 @@ main{
 }
 .event-button{
     padding: 0.5rem 1rem;
-    background-color: #2D64BC;
+    background-color: #1c48b8;
     font-size: clamp(0.2rem,12px,1rem);
     /* font-size: 20%; */
     /* white-space: nowrap; */
     margin-top: auto;
+    pointer-events: none;
+    margin-top: 10px;
+    border-radius: 100px;
 }
 .event_h{
-    font-size: clamp(0.7rem,18px,2rem);
+    font-size: clamp(0.7rem,20px,2rem);
+    font-weight: 500;
 }
 .event_t{
-    font-size: clamp(0.2rem,12px,1rem);
+    font-size: clamp(0.2rem,15px,1rem);
+    margin-top: 3px;
     
+}
+.bg-base-100 {
+    background-color: rgb(36, 36, 36);
 }
 .logo{
     width: 56px;

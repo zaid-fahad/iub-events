@@ -5,8 +5,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IUB Cube</title>
-    <style>
+    <title>IUB Cube | By IUB Builders</title>
+    <!-- <style>
         /* Limit badge width and apply ellipsis for overflow text */
         .badge {
             max-width: 100px;
@@ -32,16 +32,16 @@
         .pagination button:hover {
             background-color: #45a049;
         }
-    </style>
+    </style> -->
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-base-200">
+<body style="background-color: rgb(25, 25, 25);">
 
 <header>
-    <div class="navbar bg-base-100 mb-6">
+    <div class="navbar mb-6">
         <img src="logo.png" alt="IUB Logo" class="logo">
-        <a class="btn btn-ghost text-xl">IUB Cube</a>
-        <div class="btn justify-end">
+        <a class="ghost" style="font-size: 26px; margin-left: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: 600; color: #fff;">IUB Cube</a>
+        <!-- <div class="btn justify-end">
             <label class="swap swap-rotate">
                 <input type="checkbox" class="theme-controller" value="emerald" />
                 <svg class="swap-off h-10 w-10 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@
                 <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
             </svg>
             </label>
-        </div>
+        </div> -->
     </div>
 
     <!-- <div class="mb-6 px-6 flex flex-wrap gap-4 justify-center">
@@ -93,18 +93,18 @@
                 <img src="logo.png" alt="IUB Logo" class="logo">
                 <p class="btn btn-ghost text-xl">IUB Cube</p>
             </div>
-            <p>Get all event updates happening inside Independant University, Bangladesh</p>
             <br>
-            <p>Supported By</p>
+            <p>Explore all club and other events happening <br>at Independant University, Bangladesh</p>
+            <br>
+            <p style="margin-bottom: 5px;">Supported By</p>
             <img src="dosa.png" alt="IUB DoSA" class="logo">
             
         </div>
         <div>
-            <p><b>Built by</b></p>
-            <a href="https://iub-builders.notion.site/IUB-Builders-1b298edd0cd98015bb86f6274b640c29">IUB Builders</a>
-            <br> <br>
-            <a href="https://forms.gle/skT13i1RQNCdpFpn7">Join us to build the coolest stuffs in Bangladesh.</a> <br><br>
-            <a href="iub.ac.bd"><u>Independant University, Bangladesh</u></a>
+            <p>Built by</p>
+            <a href="https://iub-builders.notion.site/IUB-Builders-1b298edd0cd98015bb86f6274b640c29" style="color: #4caefe; font-size: large; font-weight: 500;">IUB Builders</a>
+            <br> <br> <br>
+            <a href="https://iub.ac.bd/"><u>Independant University, Bangladesh</u></a>
         </div>
     </div>
 </footer>
@@ -170,15 +170,15 @@ function displayEvents(events) {
 
     currentEvents.forEach(event => {
         const card = document.createElement('div');
-        card.classList.add('card', 'bg-base-100', 'shadow-xl', 'mb-6');
+        card.classList.add('card', 'bg-base-100', 'mb-6');
         card.innerHTML = `
             <figure>
-                <img src="dosa.png" alt="Event Image" class="event_img" />
+                <img src="default-img.png" alt="Event Image" class="event_img" />
             </figure>
             <div class="event-body">
                 <h2 class="event_h ">${event.eventName}</h2>
                 <p class="event_t ">${event.eventTime} | ${event.eventDate}</p>
-                <!-- <p class="text-lg">Location: ${event.location}</p> -->
+                <p class="event_t">${event.location}</p> 
                 <!-- <a href="event-details.html?eventName=${encodeURIComponent(event.eventName)}&eventDate=${encodeURIComponent(event.eventDate)}&eventTime=${encodeURIComponent(event.eventTime)}&eventLocation=${encodeURIComponent(event.location)}&eventDescription=${encodeURIComponent(event.description)}" class="btn btn-primary mt-4">Details</a>-->
                 <button class="mt-4 event-button dark:text-white" ><a href="event-details.html?eventName=${encodeURIComponent(event.eventName)}&eventDate=${encodeURIComponent(event.eventDate)}&eventTime=${encodeURIComponent(event.eventTime)}&eventLocation=${encodeURIComponent(event.location)}&eventDescription=${encodeURIComponent(event.description)}">${event.club}</a></button>
             </div>
@@ -188,25 +188,25 @@ function displayEvents(events) {
 }
 
 // Setup pagination buttons
-function setupPagination(events) {
-    const pagination = document.getElementById('pagination');
-    const totalPages = Math.ceil(events.length / eventsPerPage);
-    pagination.innerHTML = '';
+// function setupPagination(events) {
+//     const pagination = document.getElementById('pagination');
+//     const totalPages = Math.ceil(events.length / eventsPerPage);
+//     pagination.innerHTML = '';
     
-    const pageStart = Math.max(1, currentPage - 2);
-    const pageEnd = Math.min(totalPages, currentPage + 2);
+//     const pageStart = Math.max(1, currentPage - 2);
+//     const pageEnd = Math.min(totalPages, currentPage + 2);
 
-    for (let i = pageStart; i <= pageEnd; i++) {
-        const button = document.createElement('button');
-        button.textContent = i;
-        button.classList.add('btn', 'btn-outline', 'btn-sm');
-        button.onclick = () => {
-            currentPage = i;
-            displayEvents(events);
-        };
-        pagination.appendChild(button);
-    }
-}
+//     for (let i = pageStart; i <= pageEnd; i++) {
+//         const button = document.createElement('button');
+//         button.textContent = i;
+//         button.classList.add('btn', 'btn-outline', 'btn-sm');
+//         button.onclick = () => {
+//             currentPage = i;
+//             displayEvents(events);
+//         };
+//         pagination.appendChild(button);
+//     }
+// }
 
 // // Apply filters based on user selection
 // document.querySelector('.btn-accent').addEventListener('click', function() {
